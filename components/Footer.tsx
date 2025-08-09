@@ -71,7 +71,9 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-500">
-            <p>© {year} {content.websiteInfo.name}. All rights reserved.</p>
+            <p>
+              © {year} {content.websiteInfo.name}. All rights reserved.
+            </p>
             <span className="hidden md:block">•</span>
             <p>
               Made by{" "}

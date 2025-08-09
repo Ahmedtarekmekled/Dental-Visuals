@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { content } from "@/data";
 import { useState } from "react";
 
@@ -21,9 +22,16 @@ export default function NavBar() {
         <div className="container flex items-center justify-between py-6">
           <Link
             href="/"
-            className="font-heading text-xl font-medium tracking-tight text-primary"
+            className="flex items-center gap-3 font-heading text-xl font-medium tracking-tight text-primary"
           >
-            {content.websiteInfo.name}
+            <Image
+              src="/logo.png"
+              alt={`${content.websiteInfo.name} Logo`}
+              width={32}
+              height={32}
+              className="w-8 h-8 object-contain"
+            />
+            <span className="font-heading">{content.websiteInfo.name}</span>
           </Link>
 
           <nav className="hidden md:flex gap-8 text-sm font-medium">

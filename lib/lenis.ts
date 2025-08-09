@@ -6,17 +6,19 @@ import { useEffect } from "react";
 export function useLenis(): void {
   useEffect(() => {
     // Check if device is iOS
-    const isIOS = typeof window !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
-    
+    const isIOS =
+      typeof window !== "undefined" &&
+      /iPad|iPhone|iPod/.test(navigator.userAgent);
+
     // Disable smooth scroll on iOS to prevent crashes
     if (isIOS) {
       return;
     }
-    
+
     // Throttle RAF calls to improve performance
     let ticking = false;
     let rafId: number;
-    
+
     const lenis = new Lenis({
       smoothWheel: true,
       lerp: 0.08, // Slightly slower for better performance

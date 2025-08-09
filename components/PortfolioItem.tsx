@@ -14,10 +14,13 @@ export default function PortfolioItem({ item }: Props) {
 
   const handleMouseEnter = () => {
     // Skip video autoplay on iOS/mobile devices
-    if (typeof window !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
+    if (
+      typeof window !== "undefined" &&
+      /iPad|iPhone|iPod/.test(navigator.userAgent)
+    ) {
       return;
     }
-    
+
     if (item.videoSrc && videoRef.current) {
       setIsVideoPlaying(true);
       videoRef.current.play().catch(() => {
@@ -35,7 +38,7 @@ export default function PortfolioItem({ item }: Props) {
     }
   };
 
-    const handleTouchStart = () => {
+  const handleTouchStart = () => {
     // Handle touch devices (iOS/Android)
     if (item.videoSrc && videoRef.current && !isVideoPlaying) {
       setIsVideoPlaying(true);
@@ -46,12 +49,12 @@ export default function PortfolioItem({ item }: Props) {
   };
 
   return (
-    <div 
+    <div
       className="group relative border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-700 transition-all duration-500 backdrop-blur-sm hover:scale-[1.02] cursor-pointer"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onTouchStart={handleTouchStart}
-      style={{ WebkitTapHighlightColor: 'transparent' }}
+      style={{ WebkitTapHighlightColor: "transparent" }}
     >
       <div className="relative aspect-[4/3] bg-gray-900 overflow-hidden">
         {/* Thumbnail Image */}

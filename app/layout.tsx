@@ -3,16 +3,16 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import ErrorSuppressor from "@/components/ErrorSuppressor";
 import { content } from "@/data";
-import { Inter, Fredericka_the_Great } from "next/font/google";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import React from "react";
 import LenisClient from "@/components/LenisClient";
 
-// Using Fredericka the Great for distinctive headings and Inter for body text
-const heading = Fredericka_the_Great({
-  subsets: ["latin"],
+// Using Raqupine for distinctive headings and Inter for body text
+const heading = localFont({
+  src: "../public/fonts/Raqupine.otf",
   variable: "--font-heading",
   display: "swap",
-  weight: ["400"],
 });
 
 const body = Inter({
@@ -82,8 +82,8 @@ export const metadata = {
     "apple-touch-fullscreen": "yes",
     "mobile-web-app-capable": "yes",
     "format-detection": "telephone=no",
-    "HandheldFriendly": "true",
-    "MobileOptimized": "width",
+    HandheldFriendly: "true",
+    MobileOptimized: "width",
   },
 };
 

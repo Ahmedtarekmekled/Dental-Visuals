@@ -5,8 +5,10 @@ import { useEffect } from "react";
 export default function ErrorSuppressor() {
   useEffect(() => {
     // iOS Safari compatibility check
-    const isIOS = typeof window !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
-    
+    const isIOS =
+      typeof window !== "undefined" &&
+      /iPad|iPhone|iPod/.test(navigator.userAgent);
+
     // Comprehensive error and performance warning suppression
     const originalError = console.error;
     const originalWarn = console.warn;
