@@ -1,0 +1,275 @@
+{
+  "project_setup": {
+    "framework": "Next.js 14 (App Router)",
+    "language": "TypeScript",
+    "styling": "Tailwind CSS",
+    "animation_libraries": ["GSAP", "Lenis", "Lottie", "Three.js"],
+    "font_setup": {
+      "fonts": [
+        {
+          "name": "Neue Montreal",
+          "source": "local via next/font/local",
+          "usage": "headings",
+          "note": "Use exact Neue Montreal font files locally; do NOT substitute"
+        },
+        {
+          "name": "Suisse International",
+          "source": "local via next/font/local",
+          "usage": "body text",
+          "note": "Use exact Suisse International font files locally"
+        }
+      ]
+    },
+    "deployment": "Vercel"
+  },
+  "website_info": {
+    "name": "Dental Visuals",
+    "owner": "Osama Mohammed Eldeeb",
+    "type": "Dental Motion Graphics Portfolio",
+    "location": "Alexandria, Egypt",
+    "description": "High-impact dental videos and animations for clinics and dental professionals",
+    "tagline": "Enhancing dental communication through engaging visual storytelling",
+    "instagram": "https://www.instagram.com/dentalvisuals/"
+  },
+  "personal_info": {
+    "name": "Osama Mohammed Eldeeb",
+    "location": "Alexandria, Egypt",
+    "phone": "+201092532321",
+    "email": "0samaeldeeb1011@gmail.com",
+    "linkedin": "linkedin.com/in/osama-eldeeb-16b630293",
+    "instagram": "https://www.instagram.com/dentalvisuals/",
+    "education": {
+      "degree": "Bachelor of Dental Surgery (BDS)",
+      "university": "Alexandria University, Egypt",
+      "years": "2020-2025",
+      "status": "Current Student"
+    }
+  },
+  "brand_identity": {
+    "mission": "Ambitious and creative dental graduate with a passion for visual storytelling through motion graphics",
+    "vision": "To enhance dental brand communication and patient education through engaging visual content",
+    "approach": "Professional dental standards meets creative visual storytelling",
+    "unique_value": "Combining dental expertise with motion graphics skills"
+  },
+  "services": {
+    "primary_services": [
+      {
+        "name": "Educational Dental Animations",
+        "description": "Clear, professional animations explaining dental procedures and conditions",
+        "target": "Dental clinics and educational institutions"
+      },
+      {
+        "name": "Promotional Dental Videos",
+        "description": "Marketing content for dental clinics and practices",
+        "target": "Dental clinics seeking to enhance their brand"
+      },
+      {
+        "name": "Orthodontic Case Documentation",
+        "description": "Visual documentation of orthodontic treatment progress",
+        "target": "Orthodontists and dental specialists"
+      },
+      {
+        "name": "Surgical Animation",
+        "description": "Detailed animations of dental surgical procedures",
+        "target": "Oral surgeons and dental specialists"
+      },
+      {
+        "name": "Before-After Visual Transitions",
+        "description": "Compelling visual representations of treatment outcomes",
+        "target": "All dental professionals"
+      }
+    ]
+  },
+  "experience": {
+    "current_role": {
+      "title": "Freelance Dental Motion Graphics Designer",
+      "location": "Remote / Egypt",
+      "period": "2024–Present",
+      "achievements": [
+        "Created educational and promotional dental animations for clinics in Egypt and Europe (Sweden)",
+        "Expanded client base to South America (Brazil)",
+        "Specialized in orthodontic case documentation and surgical animation",
+        "Built strong international client relationships",
+        "Adapted visual style to meet professional dental standards"
+      ]
+    },
+    "additional_experience": {
+      "title": "Active Member — DSSA Egypt",
+      "organization": "Dental Students' Scientific Association of Egypt",
+      "period": "2021–2025",
+      "contributions": [
+        "Participated in team projects involving scientific content creation",
+        "Data management and organization",
+        "Event organization and member communication coordination"
+      ]
+    }
+  },
+  "skills": {
+    "technical_skills": [
+      {
+        "category": "Motion Graphics",
+        "tools": [
+          "Adobe After Effects",
+          "Adobe Premiere Pro",
+          "Adobe Illustrator",
+          "Adobe Photoshop"
+        ],
+        "proficiency": "Advanced"
+      },
+      {
+        "category": "Communication",
+        "description": "Clear and professional client communication",
+        "proficiency": "Expert"
+      },
+      {
+        "category": "Time Management",
+        "description": "Balancing freelance work with dental studies",
+        "proficiency": "Advanced"
+      },
+      {
+        "category": "Dental Knowledge",
+        "description": "In-depth understanding of dental procedures and terminology",
+        "proficiency": "Expert"
+      }
+    ]
+  },
+  "portfolio_structure": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "sections": ["Hero", "About", "Services", "Featured Work", "Contact"]
+      },
+      {
+        "name": "Portfolio",
+        "route": "/portfolio",
+        "sections": ["Case Studies", "Video Showcase"]
+      },
+      {
+        "name": "About",
+        "route": "/about",
+        "sections": ["Bio", "Education", "Experience"]
+      },
+      {
+        "name": "Services",
+        "route": "/services",
+        "sections": ["Services List"]
+      },
+      {
+        "name": "Contact",
+        "route": "/contact",
+        "sections": ["Form", "Social Links"]
+      }
+    ],
+    "featured_projects": [
+      {
+        "name": "Dental Visuals Instagram Brand",
+        "description": "Created and managed a visual content brand for dentists and students with educational and promotional videos",
+        "type": "Brand Development",
+        "platform": "Instagram",
+        "link": "https://www.instagram.com/dentalvisuals/",
+        "image": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop&crop=center",
+        "video": "/videos/dental-brand.mp4",
+        "year": "2024"
+      },
+      {
+        "name": "European Clinic Animations",
+        "description": "Educational and promotional content for dental clinics in Sweden",
+        "type": "International Client Work",
+        "region": "Europe",
+        "image": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&h=400&fit=crop&crop=center",
+        "video": "/videos/european-clinic.mp4",
+        "year": "2024"
+      },
+      {
+        "name": "South American Projects",
+        "description": "Dental animations for Brazilian dental professionals",
+        "type": "International Client Work",
+        "region": "South America",
+        "image": "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=600&h=400&fit=crop&crop=center",
+        "video": "/videos/south-america.mp4",
+        "year": "2024"
+      },
+      {
+        "name": "Orthodontic Case Studies",
+        "description": "Visual documentation and explanation of orthodontic treatments",
+        "type": "Specialized Animation",
+        "image": "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600&h=400&fit=crop&crop=center",
+        "video": "/videos/orthodontic-cases.mp4",
+        "year": "2023"
+      },
+      {
+        "name": "Surgical Procedure Animations",
+        "description": "Detailed animations of dental surgical procedures",
+        "type": "Educational Content",
+        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=600&h=400&fit=crop&crop=center",
+        "video": "/videos/surgical-animation.mp4",
+        "year": "2023"
+      },
+      {
+        "name": "Implant Placement Animation",
+        "description": "Step-by-step 3D animation of dental implant placement procedure",
+        "type": "3D Surgical Animation",
+        "image": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=600&h=400&fit=crop&crop=center",
+        "video": "/videos/implant-animation.mp4",
+        "year": "2024"
+      }
+    ]
+  },
+  "visual_design": {
+    "color_scheme": {
+      "primary": "#000000",
+      "secondary": "#FFFFFF",
+      "accent": "#888888",
+      "background": "Minimal white with black typography and gray accents",
+      "aesthetic": "Minimalist, high-end, Garden Eight–style with grayscale palette"
+    },
+    "typography": {
+      "primary_font": "Neue Montreal (local)",
+      "secondary_font": "Suisse International (local)",
+      "style": "Bold clean headlines, generous spacing"
+    },
+    "layout": {
+      "type": "Portfolio showcase with minimal white space",
+      "structure": "Full-screen hero, animated section transitions, grid-based portfolio",
+      "style": "Garden Eight minimalism with dental theme accents"
+    },
+    "3d_design": {
+      "use_pre_made_models": true,
+      "note": "Use high-quality pre-made 3D models related to dentistry (teeth, dental tools) instead of custom minimal Three.js shapes"
+    }
+  },
+  "interactive_features": {
+    "scroll_animations": {
+      "type": "Smooth parallax and fade animations",
+      "elements": [
+        "Floating dental 3D renders (pre-made models)",
+        "Animated dental tool icons",
+        "Scroll-triggered text reveals"
+      ],
+      "inspiration": "Garden Eight scroll storytelling style"
+    },
+    "hover_effects": {
+      "portfolio_items": "Image zoom with text fade-in overlay",
+      "service_cards": "Subtle background color shift with icon animation",
+      "social_links": "Minimal hover underline animation"
+    },
+    "video_integration": {
+      "background_videos": "Muted looping clips with dental animations",
+      "portfolio_videos": "Hover-to-play video thumbnails",
+      "auto_play": "Muted with smooth fade transitions"
+    }
+  },
+  "technical_requirements": {
+    "video_optimization": [
+      "Compressed MP4 and WebM formats",
+      "Lazy loading",
+      "Mobile adaptive playback"
+    ],
+    "responsive_design": [
+      "Mobile-first",
+      "Tablet-friendly animations",
+      "High-res desktop design"
+    ]
+  }
+}
