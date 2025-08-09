@@ -4,6 +4,9 @@ import { useEffect } from "react";
 
 export default function ErrorSuppressor() {
   useEffect(() => {
+    // iOS Safari compatibility check
+    const isIOS = typeof window !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+    
     // Comprehensive error and performance warning suppression
     const originalError = console.error;
     const originalWarn = console.warn;
@@ -77,18 +80,24 @@ export default function ErrorSuppressor() {
       }
     };
 
-    // Network request interceptor to block Sentry
+    // Network request interceptor to block Sentry (skip on iOS to prevent crashes)
     const originalFetch = window.fetch;
-    window.fetch = async (input, init) => {
-      const url =
-        typeof input === "string"
-          ? input
-          : (input as Request).url || (input as URL).href;
-      if (url && url.includes("sentry.io")) {
-        return new Response("", { status: 204 });
-      }
-      return originalFetch(input, init);
-    };
+    if (!isIOS) {
+      window.fetch = async (input, init) => {
+        try {
+          const url =
+            typeof input === "string"
+              ? input
+              : (input as Request).url || (input as URL).href;
+          if (url && url.includes("sentry.io")) {
+            return new Response("", { status: 204 });
+          }
+          return originalFetch(input, init);
+        } catch {
+          return originalFetch(input, init);
+        }
+      };
+    }
 
     // XMLHttpRequest interceptor
     const originalOpen = XMLHttpRequest.prototype.open;

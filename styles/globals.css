@@ -10,6 +10,37 @@ html,
 body {
   background: #0a0a0a;
   color: #ffffff;
+  /* iOS Safari fixes */
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  overscroll-behavior: none;
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* iOS Safari video fixes */
+video {
+  -webkit-playsinline: true;
+  object-position: center;
+}
+
+/* iOS Safari button fixes */
+button, input, select, textarea {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+
+/* Prevent iOS zoom on form inputs */
+input, select, textarea {
+  font-size: 16px;
+}
+
+/* iOS Safari scroll fixes */
+body {
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Garden Eight-inspired minimal spacing and rhythm */

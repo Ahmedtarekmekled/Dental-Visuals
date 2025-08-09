@@ -76,6 +76,23 @@ const body = localFont({
 export const metadata = {
   title: `${content.websiteInfo.name} — ${content.websiteInfo.type}`,
   description: content.websiteInfo.description,
+  other: {
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent",
+    "apple-touch-fullscreen": "yes",
+    "mobile-web-app-capable": "yes",
+    "format-detection": "telephone=no",
+    "HandheldFriendly": "true",
+    "MobileOptimized": "width",
+  },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
