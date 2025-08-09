@@ -6,6 +6,39 @@
   --gutter: 1.5rem;
 }
 
+/* Custom scroll indicator animations */
+@keyframes scrollDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(300%);
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.scroll-indicator {
+  animation: float 3s ease-in-out infinite;
+}
+
+.scroll-dot {
+  animation: scrollDown 2s ease-in-out infinite;
+}
+
 html,
 body {
   background: #0a0a0a;

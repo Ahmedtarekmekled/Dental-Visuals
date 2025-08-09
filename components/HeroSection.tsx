@@ -91,12 +91,38 @@ export default function HeroSection() {
         </div>
 
         {/* Bottom navigation hint */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-          <div className="flex flex-col items-center gap-3 text-gray-500">
-            <span className="text-xs uppercase tracking-wider font-medium">
+        <div className="mt-5 absolute left-1/2 transform -translate-x-1/2 scroll-indicator">
+          <div className="flex flex-col items-center gap-4 text-gray-400 hover:text-gray-300 transition-all duration-500 cursor-pointer group">
+            <span className="text-xs uppercase tracking-wider font-medium opacity-80 group-hover:opacity-100 transition-opacity duration-300 animate-pulse">
               Scroll
             </span>
-            <div className="w-px h-8 bg-gray-600"></div>
+            <div className="relative overflow-hidden">
+              {/* Main scroll line */}
+              <div className="w-px h-12 bg-gradient-to-b from-gray-600 via-gray-500 to-transparent"></div>
+
+              {/* Animated dot moving down */}
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1 h-2 bg-gradient-to-b from-primary to-transparent scroll-dot"></div>
+
+              {/* Bottom indicator */}
+              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-primary/60 animate-ping"></div>
+            </div>
+
+            {/* Bouncing arrow */}
+            <div className="animate-bounce">
+              <svg
+                className="w-4 h-4 text-gray-500 group-hover:text-primary transition-colors duration-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
