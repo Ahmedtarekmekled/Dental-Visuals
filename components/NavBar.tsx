@@ -22,14 +22,14 @@ export default function NavBar() {
         <div className="container flex items-center justify-between py-6">
           <Link
             href="/"
-            className="flex items-center gap-3 font-heading text-xl font-medium tracking-tight text-primary"
+            className="flex items-center gap-2 font-heading text-lg font-medium tracking-tight text-primary"
           >
             <Image
               src="/logo.png"
               alt={`${content.websiteInfo.name} Logo`}
-              width={32}
-              height={32}
-              className="w-8 h-8 object-contain"
+              width={28}
+              height={28}
+              className="w-7 h-7 object-contain"
             />
             <span className="font-heading">{content.websiteInfo.name}</span>
           </Link>

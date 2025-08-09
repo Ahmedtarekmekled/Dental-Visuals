@@ -4,6 +4,8 @@ import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import ServiceCard from "@/components/ServiceCard";
 import PortfolioItem from "@/components/PortfolioItem";
 import SketchfabEmbed from "@/components/SketchfabEmbed";
+import ScrollVelocity from "@/components/ScrollVelocity";
+import ShinyText from "@/components/ShinyText";
 import { content } from "@/data";
 
 export default function HomePage() {
@@ -70,7 +72,7 @@ export default function HomePage() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {content.featured.map((item, index) => (
+              {content.featured.slice(0, 3).map((item, index) => (
                 <div
                   key={item.name}
                   className="fade-in"
@@ -84,15 +86,39 @@ export default function HomePage() {
             <div className="mt-16 text-center fade-in">
               <a
                 href="/portfolio"
-                className="inline-flex items-center gap-4 text-primary hover:text-gray-300 transition-colors group"
+                className="inline-flex items-center gap-4 hover:text-gray-300 transition-colors group"
               >
-                <span className="text-sm font-medium uppercase tracking-wider">
-                  View All Work
-                </span>
+                <ShinyText
+                  text="VIEW ALL WORK"
+                  disabled={false}
+                  speed={3}
+                  className="text-sm font-medium uppercase tracking-wider"
+                />
                 <div className="w-8 h-px bg-primary group-hover:w-12 transition-all duration-300"></div>
               </a>
             </div>
           </ScrollAnimationWrapper>
+        </div>
+      </section>
+
+      {/* Scroll Velocity Section */}
+      <section className="py-16 border-y border-gray-800">
+        <ScrollVelocity
+          texts={["PRECISION ANIMATION", "DENTAL EXCELLENCE"]}
+          velocity={50}
+          className="text-gray-500"
+        />
+        <div className="container py-8">
+          <div className="text-center space-y-4">
+            <h3 className="font-heading text-2xl md:text-3xl text-gray-300">
+              Where Medical Expertise Meets Visual Innovation
+            </h3>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              Creating stunning dental animations that educate patients, enhance
+              communication, and elevate your practice&apos;s professional image
+              through precise 3D visualization.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -109,11 +135,14 @@ export default function HomePage() {
               <div className="fade-in">
                 <a
                   href="/contact"
-                  className="inline-flex items-center gap-4 text-primary hover:text-gray-300 transition-colors group"
+                  className="inline-flex items-center gap-4 hover:text-gray-300 transition-colors group"
                 >
-                  <span className="text-lg font-medium uppercase tracking-wider">
-                    Get In Touch
-                  </span>
+                  <ShinyText
+                    text="GET IN TOUCH"
+                    disabled={false}
+                    speed={3}
+                    className="text-lg font-medium uppercase tracking-wider"
+                  />
                   <div className="w-12 h-px bg-primary group-hover:w-16 transition-all duration-300"></div>
                 </a>
               </div>

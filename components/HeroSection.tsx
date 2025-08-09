@@ -3,17 +3,28 @@
 import { content } from "@/data";
 import ScrollAnimationWrapper from "./ScrollAnimationWrapper";
 import SketchfabEmbed from "./SketchfabEmbed";
+import Silk from "./Silk";
+import ShinyText from "./ShinyText";
+import TextType from "./TextType";
 
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center pt-20">
-      <div className="container">
+      {/* Silk Background */}
+      <Silk
+        speed={3}
+        scale={1.2}
+        color="#6B7280"
+        noiseIntensity={2}
+        rotation={0}
+      />
+      <div className="container relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left side - Statement text */}
           <ScrollAnimationWrapper>
             <div className="space-y-8">
               <div className="space-y-2">
-                <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.85] fade-in">
+                <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold leading-[0.85] fade-in">
                   <span className="block">
                     {content.websiteInfo.name.split(" ")[0]}
                   </span>
@@ -21,9 +32,18 @@ export default function HeroSection() {
                     {content.websiteInfo.name.split(" ")[1]}
                   </span>
                 </h1>
-                <p className="text-lg md:text-xl text-gray-400 fade-in font-light max-w-md">
-                  {content.websiteInfo.tagline}
-                </p>
+                <div className="text-base md:text-lg text-gray-400 fade-in font-light max-w-md">
+                  <TextType
+                    text="Enhancing dental communication through engaging visual storytelling"
+                    typingSpeed={75}
+                    pauseDuration={1500}
+                    showCursor={true}
+                    cursorCharacter="|"
+                    loop={false}
+                    className="text-base md:text-lg text-gray-400 font-light"
+                    cursorClassName="text-gray-400"
+                  />
+                </div>
               </div>
 
               <div className="space-y-4 fade-in">
@@ -36,9 +56,14 @@ export default function HeroSection() {
               <div className="fade-in">
                 <a
                   href="#work"
-                  className="inline-flex items-center gap-3 text-sm font-medium text-primary hover:text-gray-300 transition-colors group"
+                  className="inline-flex items-center gap-3 text-sm font-medium hover:text-gray-300 transition-colors group"
                 >
-                  <span className="uppercase tracking-wider">View Work</span>
+                  <ShinyText
+                    text="VIEW WORK"
+                    disabled={false}
+                    speed={3}
+                    className="uppercase tracking-wider font-medium"
+                  />
                   <div className="w-8 h-px bg-primary group-hover:w-12 transition-all duration-300"></div>
                 </a>
               </div>
@@ -46,7 +71,7 @@ export default function HeroSection() {
           </ScrollAnimationWrapper>
 
           {/* Right side - 3D Model */}
-          <div className="relative h-[500px] lg:h-[600px]">
+          <div className="relative h-[320px] lg:h-[400px]">
             <div className="absolute inset-0 rounded-2xl overflow-hidden">
               <SketchfabEmbed
                 modelId="70e3c64298484cb5a5a4bfc7f45f7990"

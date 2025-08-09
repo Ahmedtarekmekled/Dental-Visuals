@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import ShinyText from "./ShinyText";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<string>("");
@@ -32,10 +33,13 @@ export default function ContactForm() {
       </div>
 
       <div className="pt-6">
-        <button className="group relative inline-flex items-center gap-4 text-primary hover:text-gray-300 transition-colors">
-          <span className="text-sm font-medium uppercase tracking-wider">
-            Send Message
-          </span>
+        <button className="group relative inline-flex items-center gap-4 hover:text-gray-300 transition-colors">
+          <ShinyText
+            text="SEND MESSAGE"
+            disabled={false}
+            speed={3}
+            className="text-sm font-medium uppercase tracking-wider"
+          />
           <div className="w-8 h-px bg-primary group-hover:w-12 transition-all duration-300"></div>
         </button>
       </div>
