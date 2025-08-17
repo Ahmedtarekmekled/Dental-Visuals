@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import ErrorSuppressor from "@/components/ErrorSuppressor";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { content } from "@/data";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
@@ -108,9 +109,11 @@ export default function RootLayout({
         <script src="/block-sentry.js" async></script>
         <ErrorSuppressor />
         <LenisClient />
-        <NavBar />
-        {children}
-        <Footer />
+        <ErrorBoundary>
+          <NavBar />
+          {children}
+          <Footer />
+        </ErrorBoundary>
       </body>
     </html>
   );
