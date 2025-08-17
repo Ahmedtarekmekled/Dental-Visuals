@@ -40,7 +40,11 @@ export default function ErrorSuppressor() {
           message.includes("Tool timing already exists") ||
           message.includes("webkit-masked-url") ||
           message.includes("client-side exception") ||
-          message.includes("null")
+          message.includes("null") ||
+          message.includes("Script error") ||
+          message.includes("r@webkit-masked-url") ||
+          message.includes("value@webkit-masked-url") ||
+          message.includes("@webkit-masked-url")
         ) {
           return; // Don't log these errors
         }
@@ -63,7 +67,9 @@ export default function ErrorSuppressor() {
           message.includes("performance") ||
           message.includes("Eruda") ||
           message.includes("Tool dom already exists") ||
-          message.includes("Tool timing already exists")
+          message.includes("Tool timing already exists") ||
+          message.includes("webkit-masked-url") ||
+          message.includes("Script error")
         ) {
           return; // Don't log performance warnings
         }
@@ -81,34 +87,78 @@ export default function ErrorSuppressor() {
           message.includes("3D") ||
           message.includes("Eruda") ||
           message.includes("Tool dom already exists") ||
-          message.includes("Tool timing already exists")
+          message.includes("Tool timing already exists") ||
+          message.includes("webkit-masked-url") ||
+          message.includes("Script error")
         ) {
           return; // Don't log these messages
         }
         originalLog.apply(console, args);
       };
 
-      // Global error handler
+      // Global error handler - More aggressive suppression
       const handleError = (event: ErrorEvent) => {
+        const errorMessage = event.message || "";
+        const errorFilename = event.filename || "";
+        
         if (
-          event.message?.includes("sentry") ||
-          event.filename?.includes("sentry.io") ||
-          event.filename?.includes("sketchfab.com") ||
-          event.message?.includes("ERR_BLOCKED_BY_CLIENT") ||
-          event.message?.includes("WebGL") ||
-          event.message?.includes("3D") ||
-          event.message?.includes("iframe") ||
-          event.message?.includes("GL_INVALID_OPERATION") ||
-          event.message?.includes("GL_INVALID_VALUE") ||
-          event.message?.includes("GL_OUT_OF_MEMORY") ||
-          event.message?.includes("THREE") ||
-          event.message?.includes("WebGL context lost") ||
-          event.message?.includes("Eruda") ||
-          event.message?.includes("Tool dom already exists") ||
-          event.message?.includes("Tool timing already exists") ||
-          event.message?.includes("webkit-masked-url") ||
-          event.message?.includes("client-side exception") ||
-          event.message?.includes("null")
+          errorMessage.includes("sentry") ||
+          errorFilename.includes("sentry.io") ||
+          errorFilename.includes("sketchfab.com") ||
+          errorMessage.includes("ERR_BLOCKED_BY_CLIENT") ||
+          errorMessage.includes("WebGL") ||
+          errorMessage.includes("3D") ||
+          errorMessage.includes("iframe") ||
+          errorMessage.includes("GL_INVALID_OPERATION") ||
+          errorMessage.includes("GL_INVALID_VALUE") ||
+          errorMessage.includes("GL_OUT_OF_MEMORY") ||
+          errorMessage.includes("THREE") ||
+          errorMessage.includes("WebGL context lost") ||
+          errorMessage.includes("Eruda") ||
+          errorMessage.includes("Tool dom already exists") ||
+          errorMessage.includes("Tool timing already exists") ||
+          errorMessage.includes("webkit-masked-url") ||
+          errorMessage.includes("client-side exception") ||
+          errorMessage.includes("null") ||
+          errorMessage.includes("Script error") ||
+          errorMessage.includes("r@webkit-masked-url") ||
+          errorMessage.includes("value@webkit-masked-url") ||
+          errorMessage.includes("@webkit-masked-url") ||
+          errorFilename.includes("webkit-masked-url") ||
+          errorFilename.includes("hidden")
+        ) {
+          event.preventDefault();
+          event.stopPropagation();
+          event.stopImmediatePropagation();
+          return false;
+        }
+      };
+
+      // Global unhandled rejection handler
+      const handleRejection = (event: PromiseRejectionEvent) => {
+        const reason = event.reason;
+        const reasonMessage = reason?.message || "";
+        const reasonStack = reason?.stack || "";
+        
+        if (
+          reasonMessage.includes("sentry") ||
+          reasonStack.includes("sentry.io") ||
+          reasonMessage.includes("WebGL") ||
+          reasonMessage.includes("sketchfab") ||
+          reasonMessage.includes("3D") ||
+          reasonMessage.includes("iframe") ||
+          reasonMessage.includes("Eruda") ||
+          reasonMessage.includes("Tool dom already exists") ||
+          reasonMessage.includes("Tool timing already exists") ||
+          reasonMessage.includes("webkit-masked-url") ||
+          reasonMessage.includes("client-side exception") ||
+          reasonMessage.includes("null") ||
+          reasonMessage.includes("Script error") ||
+          reasonMessage.includes("r@webkit-masked-url") ||
+          reasonMessage.includes("value@webkit-masked-url") ||
+          reasonMessage.includes("@webkit-masked-url") ||
+          reasonStack.includes("webkit-masked-url") ||
+          reasonStack.includes("hidden")
         ) {
           event.preventDefault();
           event.stopPropagation();
@@ -116,25 +166,31 @@ export default function ErrorSuppressor() {
         }
       };
 
-      // Global unhandled rejection handler
-      const handleRejection = (event: PromiseRejectionEvent) => {
+      // Override window.onerror to catch script errors
+      const originalOnError = window.onerror;
+      window.onerror = function(message, source, lineno, colno, error) {
+        const errorStr = String(message || "");
+        const sourceStr = String(source || "");
+        
         if (
-          event.reason?.message?.includes("sentry") ||
-          event.reason?.stack?.includes("sentry.io") ||
-          event.reason?.message?.includes("WebGL") ||
-          event.reason?.message?.includes("sketchfab") ||
-          event.reason?.message?.includes("3D") ||
-          event.reason?.message?.includes("iframe") ||
-          event.reason?.message?.includes("Eruda") ||
-          event.reason?.message?.includes("Tool dom already exists") ||
-          event.reason?.message?.includes("Tool timing already exists") ||
-          event.reason?.message?.includes("webkit-masked-url") ||
-          event.reason?.message?.includes("client-side exception") ||
-          event.reason?.message?.includes("null")
+          errorStr.includes("webkit-masked-url") ||
+          errorStr.includes("Script error") ||
+          errorStr.includes("r@webkit-masked-url") ||
+          errorStr.includes("value@webkit-masked-url") ||
+          errorStr.includes("@webkit-masked-url") ||
+          sourceStr.includes("webkit-masked-url") ||
+          sourceStr.includes("hidden") ||
+          errorStr.includes("null")
         ) {
-          event.preventDefault();
-          return false;
+          return true; // Prevent error from bubbling up
         }
+        
+        // Call original handler if it exists
+        if (originalOnError) {
+          return originalOnError.call(this, message, source, lineno, colno, error);
+        }
+        
+        return false;
       };
 
       // Network request interceptor to block problematic requests (skip on iOS to prevent crashes)
@@ -212,8 +268,8 @@ export default function ErrorSuppressor() {
         };
       }
 
-      window.addEventListener("error", handleError);
-      window.addEventListener("unhandledrejection", handleRejection);
+      window.addEventListener("error", handleError, true); // Use capture phase
+      window.addEventListener("unhandledrejection", handleRejection, true); // Use capture phase
 
       return () => {
         console.error = originalError;
@@ -221,8 +277,9 @@ export default function ErrorSuppressor() {
         console.log = originalLog;
         window.fetch = originalFetch;
         XMLHttpRequest.prototype.open = originalOpen;
-        window.removeEventListener("error", handleError);
-        window.removeEventListener("unhandledrejection", handleRejection);
+        window.onerror = originalOnError;
+        window.removeEventListener("error", handleError, true);
+        window.removeEventListener("unhandledrejection", handleRejection, true);
       };
     } catch (error) {
       // If ErrorSuppressor itself fails, just log a warning and continue

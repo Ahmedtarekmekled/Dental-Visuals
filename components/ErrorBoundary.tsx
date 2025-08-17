@@ -19,11 +19,48 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   static getDerivedStateFromError(error: Error): State {
+    // Check if this is a webkit-masked-url error that we should ignore
+    const errorMessage = error.message || "";
+    const errorStack = error.stack || "";
+    
+    if (
+      errorMessage.includes("webkit-masked-url") ||
+      errorMessage.includes("Script error") ||
+      errorMessage.includes("r@webkit-masked-url") ||
+      errorMessage.includes("value@webkit-masked-url") ||
+      errorMessage.includes("@webkit-masked-url") ||
+      errorStack.includes("webkit-masked-url") ||
+      errorStack.includes("hidden") ||
+      errorMessage.includes("null")
+    ) {
+      // Don't show error boundary for these specific errors
+      return { hasError: false };
+    }
+    
     // Update state so the next render will show the fallback UI
     return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // Check if this is an error we should ignore
+    const errorMessage = error.message || "";
+    const errorStack = error.stack || "";
+    
+    if (
+      errorMessage.includes("webkit-masked-url") ||
+      errorMessage.includes("Script error") ||
+      errorMessage.includes("r@webkit-masked-url") ||
+      errorMessage.includes("value@webkit-masked-url") ||
+      errorMessage.includes("@webkit-masked-url") ||
+      errorStack.includes("webkit-masked-url") ||
+      errorStack.includes("hidden") ||
+      errorMessage.includes("null")
+    ) {
+      // Just log a warning for these errors but don't show the error boundary
+      console.warn("Ignoring webkit-masked-url error:", error);
+      return;
+    }
+    
     // Log error to console but don't show it to users
     console.warn("ErrorBoundary caught an error:", error, errorInfo);
   }
