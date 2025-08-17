@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { content } from "@/data";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -15,14 +15,52 @@ const navLinks = [
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Handle scroll for sticky navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (isMenuOpen && !target.closest('.mobile-menu') && !target.closest('.menu-button')) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('click', handleClickOutside);
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-garden-dark/90 backdrop-blur-sm">
-        <div className="container flex items-center justify-between py-6">
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-garden-dark/95 backdrop-blur-md shadow-lg' 
+          : 'bg-garden-dark/90 backdrop-blur-sm'
+      }`}>
+        <div className="container flex items-center justify-between py-4 md:py-6">
           <Link
             href="/"
-            className="flex items-center gap-2 font-heading text-lg font-medium tracking-tight text-primary"
+            className="flex items-center gap-2 font-heading text-lg font-medium tracking-tight text-primary z-50"
           >
             <Image
               src="/logo.png"
@@ -34,6 +72,7 @@ export default function NavBar() {
             <span className="font-heading">{content.websiteInfo.name}</span>
           </Link>
 
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex gap-8 text-sm font-medium">
             {navLinks.map((item) => (
               <Link
@@ -54,9 +93,14 @@ export default function NavBar() {
             >
               IG
             </Link>
+            
+            {/* Mobile Menu Button */}
             <button
-              className="md:hidden text-primary relative w-6 h-6 flex flex-col justify-center gap-1"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="menu-button md:hidden text-primary relative w-6 h-6 flex flex-col justify-center gap-1 z-50"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsMenuOpen(!isMenuOpen);
+              }}
               aria-label="Toggle menu"
             >
               <div
@@ -81,13 +125,14 @@ export default function NavBar() {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-garden-dark/95 backdrop-blur-md transition-opacity duration-300 md:hidden ${
+        className={`mobile-menu fixed inset-0 z-40 bg-garden-dark/95 backdrop-blur-md transition-all duration-300 md:hidden ${
           isMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
         }`}
+        style={{ top: '0', paddingTop: '80px' }}
       >
-        <div className="flex flex-col items-center justify-center h-full space-y-8">
+        <div className="flex flex-col items-center justify-center h-full space-y-8 px-4">
           {navLinks.map((item, index) => (
             <Link
               key={item.href}
@@ -123,6 +168,9 @@ export default function NavBar() {
           </div>
         </div>
       </div>
+
+      {/* Spacer to prevent content from going under fixed navbar */}
+      <div className="h-20 md:h-24"></div>
     </>
   );
 }

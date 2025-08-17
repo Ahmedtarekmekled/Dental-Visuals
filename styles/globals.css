@@ -2,108 +2,127 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --gutter: 1.5rem;
+@layer base {
+  :root {
+    --font-heading: "Raqupine", serif;
+    --font-body: "Inter", sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
 }
 
-/* Custom scroll indicator animations */
-@keyframes scrollDown {
-  0% {
-    transform: translateY(-100%);
-    opacity: 0;
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
-  50% {
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .scroll-indicator {
+    @apply fixed bottom-8 right-8 w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary hover:bg-primary/30 transition-colors cursor-pointer z-40;
+  }
+
+  .scroll-dot {
+    @apply w-2 h-2 bg-primary rounded-full transition-all duration-300;
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+}
+
+@keyframes fadeIn {
+  to {
     opacity: 1;
-  }
-  100% {
-    transform: translateY(300%);
-    opacity: 0;
+    transform: translateY(0);
   }
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
+/* iOS-specific fixes */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari specific styles */
+  
+  /* Fix for fixed positioning on iOS */
+  .fixed {
+    position: -webkit-sticky;
+    position: sticky;
   }
-  50% {
-    transform: translateY(-10px);
+  
+  /* Ensure proper z-index stacking on iOS */
+  header {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
-}
-
-.scroll-indicator {
-  animation: float 3s ease-in-out infinite;
-}
-
-.scroll-dot {
-  animation: scrollDown 2s ease-in-out infinite;
-}
-
-html,
-body {
-  background: #0a0a0a;
-  color: #ffffff;
-  /* iOS Safari fixes */
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  overscroll-behavior: none;
-  position: relative;
-  min-height: 100vh;
-  width: 100%;
-}
-
-/* iOS Safari video fixes */
-video {
-  -webkit-playsinline: true;
-  object-position: center;
-}
-
-/* iOS Safari button fixes */
-button,
-input,
-select,
-textarea {
-  -webkit-appearance: none;
-  -webkit-border-radius: 0;
-  border-radius: 0;
-}
-
-/* Prevent iOS zoom on form inputs */
-input,
-select,
-textarea {
-  font-size: 16px;
-}
-
-/* iOS Safari scroll fixes */
-body {
-  -webkit-overflow-scrolling: touch;
-}
-
-/* iOS 3D/WebGL optimizations */
-iframe {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-/* Disable hardware acceleration on iOS for iframes to prevent crashes */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  
+  /* Fix for backdrop-blur on iOS */
+  .backdrop-blur-sm,
+  .backdrop-blur-md {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  
+  /* Fix for mobile menu on iOS */
+  .mobile-menu {
+    -webkit-overflow-scrolling: touch;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+  }
+  
+  /* Prevent body scroll on iOS when menu is open */
+  body.menu-open {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  /* Fix for button touch targets on iOS */
+  button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
+  /* Fix for iframe rendering on iOS */
   iframe {
     -webkit-transform: none;
     transform: none;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
 }
 
-/* iOS memory optimization */
+/* General memory optimization */
 * {
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
 }
 
-/* Prevent iOS Safari from creating new layers unnecessarily */
 .fade-in,
 .scroll-indicator,
 .scroll-dot {
@@ -112,38 +131,26 @@ iframe {
   will-change: auto;
 }
 
-/* iOS-specific iframe optimizations */
-iframe[src*="sketchfab"] {
-  -webkit-transform: none;
-  transform: none;
-  -webkit-backface-visibility: visible;
-  backface-visibility: visible;
-  will-change: auto;
+/* Ensure proper stacking context for navbar */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
-/* Garden Eight-inspired minimal spacing and rhythm */
-.container {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: var(--gutter);
-  padding-right: var(--gutter);
+/* Mobile menu improvements */
+.mobile-menu {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
-/* Smooth fade utility */
-.fade-in {
-  opacity: 0;
-  transform: translateY(12px);
-}
-
-/* Video hover overlay */
-.video-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.04);
-  opacity: 0;
-  transition: opacity 300ms ease;
-}
-.group:hover .video-overlay {
-  opacity: 1;
+/* Prevent text selection on menu items */
+.mobile-menu a {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
