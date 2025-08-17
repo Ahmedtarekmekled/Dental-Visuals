@@ -6,8 +6,11 @@ import SketchfabEmbed from "./SketchfabEmbed";
 import Silk from "./Silk";
 import ShinyText from "./ShinyText";
 import TextType from "./TextType";
+import { useDeviceDetection } from "@/lib/deviceDetection";
 
 export default function HeroSection() {
+  const { isMobile } = useDeviceDetection();
+
   return (
     <section className="relative min-h-screen flex items-center pt-20">
       {/* Silk Background */}
@@ -24,7 +27,7 @@ export default function HeroSection() {
           <ScrollAnimationWrapper>
             <div className="space-y-8">
               <div className="space-y-2">
-                <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold leading-[0.85] fade-in">
+                <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[0.85] fade-in">
                   <span className="block">
                     {content.websiteInfo.name.split(" ")[0]}
                   </span>
@@ -32,7 +35,7 @@ export default function HeroSection() {
                     {content.websiteInfo.name.split(" ")[1]}
                   </span>
                 </h1>
-                <div className="text-base md:text-lg text-gray-400 fade-in font-light max-w-md">
+                <div className="text-sm sm:text-base md:text-lg text-gray-400 fade-in font-light max-w-md">
                   <TextType
                     text="Enhancing dental communication through engaging visual storytelling"
                     typingSpeed={75}
@@ -40,7 +43,7 @@ export default function HeroSection() {
                     showCursor={true}
                     cursorCharacter="|"
                     loop={false}
-                    className="text-base md:text-lg text-gray-400 font-light"
+                    className="text-sm sm:text-base md:text-lg text-gray-400 font-light"
                     cursorClassName="text-gray-400"
                   />
                 </div>
@@ -73,12 +76,38 @@ export default function HeroSection() {
           {/* Right side - 3D Model */}
           <div className="relative h-[320px] lg:h-[400px]">
             <div className="absolute inset-0 rounded-2xl overflow-hidden">
-              <SketchfabEmbed
-                modelId="70e3c64298484cb5a5a4bfc7f45f7990"
-                title="Realistic Mouth"
-                className="w-full h-full"
-                transparent={true}
-              />
+              {isMobile ? (
+                <div className="w-full h-full bg-gray-900/50 rounded-lg flex items-center justify-center">
+                  <div className="text-center space-y-3">
+                    <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto">
+                      <svg
+                        className="w-6 h-6 text-primary"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-300">3D Dental Model</p>
+                    <p className="text-xs text-gray-500">
+                      View on desktop for interactive experience
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <SketchfabEmbed
+                  modelId="70e3c64298484cb5a5a4bfc7f45f7990"
+                  title="Realistic Mouth"
+                  className="w-full h-full"
+                  transparent={true}
+                />
+              )}
             </div>
 
             {/* Floating badge */}
@@ -92,37 +121,9 @@ export default function HeroSection() {
 
         {/* Bottom navigation hint */}
         <div className="mt-5 absolute left-1/2 transform -translate-x-1/2 scroll-indicator">
-          <div className="flex flex-col items-center gap-4 text-gray-400 hover:text-gray-300 transition-all duration-500 cursor-pointer group">
-            <span className="text-xs uppercase tracking-wider font-medium opacity-80 group-hover:opacity-100 transition-opacity duration-300 animate-pulse">
-              Scroll
-            </span>
-            <div className="relative overflow-hidden">
-              {/* Main scroll line */}
-              <div className="w-px h-12 bg-gradient-to-b from-gray-600 via-gray-500 to-transparent"></div>
-
-              {/* Animated dot moving down */}
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1 h-2 bg-gradient-to-b from-primary to-transparent scroll-dot"></div>
-
-              {/* Bottom indicator */}
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-primary/60 animate-ping"></div>
-            </div>
-
-            {/* Bouncing arrow */}
-            <div className="animate-bounce">
-              <svg
-                className="w-4 h-4 text-gray-500 group-hover:text-primary transition-colors duration-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                />
-              </svg>
-            </div>
+          <div className="flex flex-col items-center space-y-2">
+            <div className="w-px h-8 bg-gray-600"></div>
+            <div className="w-2 h-2 bg-primary rounded-full scroll-dot"></div>
           </div>
         </div>
       </div>

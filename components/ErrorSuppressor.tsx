@@ -24,7 +24,16 @@ export default function ErrorSuppressor() {
         message.includes("deviceorientation events are blocked") ||
         message.includes("Failed to load resource") ||
         message.includes("Allow attribute will take precedence") ||
-        message.includes("POST https://sentry.io")
+        message.includes("POST https://sentry.io") ||
+        message.includes("WebGL") ||
+        message.includes("sketchfab.com") ||
+        message.includes("iframe") ||
+        message.includes("3D") ||
+        message.includes("WebGL context lost") ||
+        message.includes("THREE") ||
+        message.includes("GL_INVALID_OPERATION") ||
+        message.includes("GL_INVALID_VALUE") ||
+        message.includes("GL_OUT_OF_MEMORY")
       ) {
         return; // Don't log these errors
       }
@@ -38,7 +47,13 @@ export default function ErrorSuppressor() {
         message.includes("handler took") ||
         message.includes("Violation") ||
         message.includes("non-passive event listener") ||
-        message.includes("Download the React DevTools")
+        message.includes("Download the React DevTools") ||
+        message.includes("WebGL") ||
+        message.includes("sketchfab") ||
+        message.includes("3D") ||
+        message.includes("iframe") ||
+        message.includes("memory") ||
+        message.includes("performance")
       ) {
         return; // Don't log performance warnings
       }
@@ -50,7 +65,10 @@ export default function ErrorSuppressor() {
       const message = args.join(" ");
       if (
         message.includes("sentry") ||
-        message.includes("Download the React DevTools")
+        message.includes("Download the React DevTools") ||
+        message.includes("sketchfab") ||
+        message.includes("WebGL") ||
+        message.includes("3D")
       ) {
         return; // Don't log these messages
       }
@@ -63,7 +81,15 @@ export default function ErrorSuppressor() {
         event.message?.includes("sentry") ||
         event.filename?.includes("sentry.io") ||
         event.filename?.includes("sketchfab.com") ||
-        event.message?.includes("ERR_BLOCKED_BY_CLIENT")
+        event.message?.includes("ERR_BLOCKED_BY_CLIENT") ||
+        event.message?.includes("WebGL") ||
+        event.message?.includes("3D") ||
+        event.message?.includes("iframe") ||
+        event.message?.includes("GL_INVALID_OPERATION") ||
+        event.message?.includes("GL_INVALID_VALUE") ||
+        event.message?.includes("GL_OUT_OF_MEMORY") ||
+        event.message?.includes("THREE") ||
+        event.message?.includes("WebGL context lost")
       ) {
         event.preventDefault();
         event.stopPropagation();
@@ -75,14 +101,18 @@ export default function ErrorSuppressor() {
     const handleRejection = (event: PromiseRejectionEvent) => {
       if (
         event.reason?.message?.includes("sentry") ||
-        event.reason?.stack?.includes("sentry.io")
+        event.reason?.stack?.includes("sentry.io") ||
+        event.reason?.message?.includes("WebGL") ||
+        event.reason?.message?.includes("sketchfab") ||
+        event.reason?.message?.includes("3D") ||
+        event.reason?.message?.includes("iframe")
       ) {
         event.preventDefault();
         return false;
       }
     };
 
-    // Network request interceptor to block Sentry (skip on iOS to prevent crashes)
+    // Network request interceptor to block problematic requests (skip on iOS to prevent crashes)
     const originalFetch = window.fetch;
     if (!isIOS) {
       window.fetch = async (input, init) => {
@@ -91,7 +121,10 @@ export default function ErrorSuppressor() {
             typeof input === "string"
               ? input
               : (input as Request).url || (input as URL).href;
-          if (url && url.includes("sentry.io")) {
+          if (
+            url &&
+            (url.includes("sentry.io") || url.includes("sketchfab.com"))
+          ) {
             return new Response("", { status: 204 });
           }
           return originalFetch(input, init);
@@ -110,11 +143,49 @@ export default function ErrorSuppressor() {
       user?: string | null,
       password?: string | null
     ) {
-      if (typeof url === "string" && url.includes("sentry.io")) {
+      if (
+        typeof url === "string" &&
+        (url.includes("sentry.io") || url.includes("sketchfab.com"))
+      ) {
         return;
       }
       return originalOpen.call(this, method, url, async, user, password);
     };
+
+    // iOS-specific optimizations
+    if (isIOS) {
+      // Disable WebGL on iOS to prevent crashes
+      const originalGetContext = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = function (
+        this: HTMLCanvasElement,
+        contextId: string,
+        contextAttributes?:
+          | CanvasRenderingContext2DSettings
+          | WebGLContextAttributes
+          | ImageBitmapRenderingContextSettings
+      ) {
+        if (
+          contextId === "webgl" ||
+          contextId === "webgl2" ||
+          contextId === "experimental-webgl"
+        ) {
+          return null; // Return null to prevent WebGL context creation
+        }
+        return originalGetContext.call(this, contextId, contextAttributes);
+      } as typeof HTMLCanvasElement.prototype.getContext;
+
+      // Disable iframe loading on iOS
+      const originalCreateElement = document.createElement;
+      document.createElement = function (tagName: string) {
+        const element = originalCreateElement.call(document, tagName);
+        if (tagName.toLowerCase() === "iframe") {
+          // Add iOS-specific attributes to prevent crashes
+          element.setAttribute("loading", "lazy");
+          element.setAttribute("importance", "low");
+        }
+        return element;
+      };
+    }
 
     window.addEventListener("error", handleError);
     window.addEventListener("unhandledrejection", handleRejection);

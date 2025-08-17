@@ -81,6 +81,46 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+/* iOS 3D/WebGL optimizations */
+iframe {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Disable hardware acceleration on iOS for iframes to prevent crashes */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  iframe {
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+/* iOS memory optimization */
+* {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Prevent iOS Safari from creating new layers unnecessarily */
+.fade-in,
+.scroll-indicator,
+.scroll-dot {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: auto;
+}
+
+/* iOS-specific iframe optimizations */
+iframe[src*="sketchfab"] {
+  -webkit-transform: none;
+  transform: none;
+  -webkit-backface-visibility: visible;
+  backface-visibility: visible;
+  will-change: auto;
+}
+
 /* Garden Eight-inspired minimal spacing and rhythm */
 .container {
   max-width: 1200px;

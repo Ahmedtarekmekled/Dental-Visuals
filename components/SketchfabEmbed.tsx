@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 type SketchfabEmbedProps = {
   modelId: string;
@@ -18,7 +18,26 @@ export default function SketchfabEmbed({
   lazy = false,
 }: SketchfabEmbedProps) {
   const [isLoaded, setIsLoaded] = useState(!lazy);
+  const [isIOS, setIsIOS] = useState(false);
+  const [showFallback, setShowFallback] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    // Detect iOS devices
+    const checkIOS = () => {
+      if (typeof window !== "undefined") {
+        const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        setIsIOS(isIOSDevice);
+
+        // On iOS, show fallback by default to prevent crashes
+        if (isIOSDevice) {
+          setShowFallback(true);
+        }
+      }
+    };
+
+    checkIOS();
+  }, []);
 
   // Highly optimized embed URL for maximum performance
   const embedUrl = `https://sketchfab.com/models/${modelId}/embed?autostart=${
@@ -28,8 +47,49 @@ export default function SketchfabEmbed({
   }&ui_theme=dark&ui_controls=0&ui_infos=0&ui_inspector=0&ui_stop=0&ui_watermark=0&ui_color=ffffff&camera=0&dnt=1&quality=low&animation=0&sound=0&internal=1&tracking=0`;
 
   const handleLoadModel = () => {
+    // On iOS, show a warning instead of loading the 3D model
+    if (isIOS) {
+      alert(
+        "3D models are not supported on iOS devices to ensure optimal performance. Please view on desktop for the full experience."
+      );
+      return;
+    }
     setIsLoaded(true);
   };
+
+  // Show fallback image on iOS or if explicitly requested
+  if (showFallback || (isIOS && !isLoaded)) {
+    return (
+      <div
+        className={`relative ${className} bg-gray-900/50 rounded-lg flex items-center justify-center`}
+      >
+        <div className="text-center space-y-3">
+          <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto">
+            <svg
+              className="w-6 h-6 text-primary"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+          <p className="text-sm text-gray-300">3D Model Preview</p>
+          <p className="text-xs text-gray-500">{title}</p>
+          {isIOS && (
+            <p className="text-xs text-gray-600 mt-2">
+              View on desktop for interactive 3D experience
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   if (!isLoaded) {
     return (
@@ -72,6 +132,11 @@ export default function SketchfabEmbed({
         className="absolute inset-0 w-full h-full rounded-lg"
         style={{ border: "none" }}
         loading="lazy"
+        onError={() => {
+          // Fallback on error
+          setShowFallback(true);
+          setIsLoaded(false);
+        }}
         onLoad={() => {
           // Suppress Sentry errors from Sketchfab and optimize performance
           if (iframeRef.current?.contentWindow) {
